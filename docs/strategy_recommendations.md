@@ -15,7 +15,7 @@ capture a screenshot and browser URL for diagnosis.
 
 ## 2. Selected Automated Tests
 
-### UI — Successful Single-Bet Placement
+#### UI — Successful Single-Bet Placement
 
 The UI test covers the primary customer journey:
 
@@ -31,7 +31,7 @@ This journey was selected because it crosses the match list, odds selection, Bet
 Slip, transaction submission, receipt, and balance state. It provides more useful
 regression coverage than testing an isolated UI control.
 
-### API — Reset Balance Consistency
+#### API — Reset Balance Consistency
 
 The API test verifies that `POST /api/reset-balance` and `GET /api/balance` agree
 on the persisted account state. It also validates the expected reset amount,
@@ -75,26 +75,51 @@ UI regression checks as the product defects are fixed.
 
 ## 5. Recommendations for Scaling
 
-### Recommendation 1 — CI/CD and Failure Artifacts
+The current automation is intentionally limited to the two tests required by the
+assignment. The following areas can be added as the product and regression suite
+grow.
 
-Run API and UI smoke tests in CI after the target environment is available. Keep
-automatic screenshots, browser metadata, logs, and Allure attachments for UI
-failures. API failures should retain the request correlation ID and response body
-in the report.
+#### CI/CD
 
-### Recommendation 2 — Expand API and Integration Coverage
+Integrate the API and UI smoke tests into CI/CD and run the broader regression
+suite before releases. Publish test results, Allure reports, logs, and failure
+screenshots as build artifacts.
 
-Prioritize server-side checks for insufficient balance, stake boundaries and
-precision, invalid selections, unknown matches, authorization, malformed payloads,
-currency consistency, past-event eligibility, and duplicate/in-progress bets.
-Use isolated user data or a supported reset mechanism for repeatable execution.
+#### Test Data and Environment Management
 
-### Recommendation 3 — Establish a Single Contract
+Use isolated users and test datasets for balance and transaction scenarios.
+Provide automated cleanup and reset mechanisms so tests remain independent and
+repeatable across non-production environments.
 
-Resolve the specification discrepancies and make the API contract authoritative.
-Contract and business-rule tests should enforce response schemas, status codes,
-currency, balance transitions, and match eligibility before the UI suite is
-expanded.
+#### Broader Functional and API Coverage
+
+Expand automation for insufficient balance, stake boundaries, filtering,
+authorization, invalid payloads, past-event eligibility, currency consistency,
+and other business rules identified during testing. API contract/schema
+validation should also be added.
+
+#### Cross-Browser and Parallel Execution
+
+As UI coverage increases, add cross-browser testing using Selenium Grid or a
+cloud browser platform. The existing pytest-xdist setup can continue to handle
+parallel execution.
+
+#### Non-Functional Testing
+
+Introduce load, stress, and soak testing for the APIs and critical user flows
+once functional behavior is stable. Define performance thresholds with the
+engineering and product teams.
+
+#### Mobile Testing
+
+If mobile browsers or native applications become supported, add mobile
+automation for the supported platforms and prioritize the critical betting
+journeys.
+
+#### Reporting and Dashboards
+
+As execution volume grows, introduce dashboards for pass/fail trends, flaky
+tests, execution time, defect trends, and API performance.
 
 ## 6. Framework Principles
 

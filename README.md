@@ -11,7 +11,7 @@ deliverables required by the assignment.
 - Selenium WebDriver with desktop Chrome
 - `requests` for API testing
 - Allure Pytest integration
-- `pytest-xdist` for two-worker parallel execution
+- `pytest-xdist` for parallel test execution
 - Poetry for dependency management
 
 ## Project structure
@@ -22,7 +22,7 @@ core/               Configuration, API client, UI client, and logging
 ui_pages/           Selenium Page Objects and locators
 tests/api/          API tests
 tests/ui/           UI tests and UI fixtures
-docs/               Test plan, execution results, strategy, and source PDFs
+docs/               Test plan, execution results, and strategy
 evidence/           Defect evidence
 ```
 
@@ -86,8 +86,8 @@ parallel unless the target application provides isolated state for that user.
 
 ## Running the tests
 
-The default Pytest configuration runs both tests in parallel across two workers
-and writes Allure results to `allure-results/`.
+The default Pytest configuration runs tests in parallel using pytest-xdist
+and automatically determines the worker count and writes Allure results to `allure-results/`.
 
 Run the complete suite:
 
@@ -136,7 +136,7 @@ allure serve allure-results
 To generate a report directory instead:
 
 ```bash
-allure generate allure-results -o allure-report --clean
+allure generate allure-results -o allure-report
 ```
 
 Generated `allure-results/` and `allure-report/` directories are ignored by Git.
@@ -158,8 +158,6 @@ These failures represent product defects documented in
 - [Test plan](docs/test_plan.md)
 - [Execution results and bug reports](docs/execution_results.md)
 - [Strategy and recommendations](docs/strategy_recommendations.md)
-- [Feature specification](docs/Feature_Specification.pdf)
-- [Take-home assignment](docs/HQA_Take_Home_Task.pdf)
 
 ## Scope
 
