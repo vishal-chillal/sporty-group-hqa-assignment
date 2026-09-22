@@ -1,9 +1,15 @@
+
 from assertpy import assert_that
+import allure
 import pytest
 
 from api_services.balance_service import BalanceService
 from api_services.betting_service import BettingService
 
+
+@allure.title("Verify that the balance returned by the reset endpoint "
+"matches the balance returned by the balance endpoint.")
+@allure.severity(allure.severity_level.CRITICAL)
 @pytest.mark.api
 class TestBettingAPI:
 
