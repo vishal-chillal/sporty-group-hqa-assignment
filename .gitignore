@@ -20,6 +20,9 @@ coverage.xml
 allure-results/
 allure-report/
 
+# Test artifacts
+test-artifacts/
+
 # IDE
 .vscode/
 
