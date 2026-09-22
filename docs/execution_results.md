@@ -336,8 +336,25 @@ Users cannot see their current available balance directly in the Bet Slip while 
 
 ---
 
-## Observation — Filtered Match Count Remains 103
+## Additional Observations
 
-The UI continues to display a `103 matches` count even when a filter produces 3, 4, or 0 visible matches.
+The following observations were identified during exploratory testing. They are
+not included in the primary defect list because they either require clarification
+against the specification or have limited functional impact.
 
-This is recorded as an observation rather than a primary defect because the supplied feature specification does not explicitly define a match-count display requirement.
+### Observation — Filtered Match Count Remains 103
+
+The UI continues to display `103 matches` even when filtering produces 3, 4, or
+0 visible matches.
+
+This is recorded as an observation because the supplied specification does not
+explicitly define a match-count display requirement.
+
+### Observation — Odds Filter Range Appears More Restrictive Than the Specification
+
+The UI provides an odds filter range of approximately `1.00–10.00`, while the
+specification defines supported odds up to `1000.00`.
+
+The current match data did not provide odds above 10.00, so this was not raised
+as a confirmed functional defect. The supported filter range should be clarified
+against the product requirements.
