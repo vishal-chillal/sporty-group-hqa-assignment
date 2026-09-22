@@ -259,7 +259,7 @@ The UI balance remained unchanged immediately after the successful bet. After a 
 The displayed balance is temporarily stale and can mislead the user about available funds.
 
 ### Evidence
-[Screen recording — UI balance not updated after successful bet](../evidences/bug-007-ui-balance-not-updated.mp4)
+[Screen recording — UI balance not updated after successful bet](../evidence/bug-007-ui-balance-not-updated.mp4)
 ---
 
 ## BUG-008 — Invalid Odds Filter Range Is Not Rejected

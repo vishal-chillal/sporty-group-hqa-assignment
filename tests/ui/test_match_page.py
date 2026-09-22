@@ -7,6 +7,13 @@ from ui_pages.bet_slip_page import BetSlipPage
 from ui_pages.header_page import HeaderPage
 from ui_pages.match_page import MatchPage
 from ui_pages.receipt_page import ReceiptPage
+from core.config import (
+    BASE_URL,
+    DEFAULT_SELECTION,
+    DEFAULT_STAKE,
+    SELECTION_LABELS,
+    TEST_USER_ID,
+)
 
 
 @allure.epic("Betting UI")
@@ -14,11 +21,11 @@ from ui_pages.receipt_page import ReceiptPage
 @pytest.mark.ui
 @pytest.mark.smoke
 class TestBetPlacement:
-    """End-to-end UI tests for single bet placement."""
+    """End-to-end smoke coverage for the successful single-bet journey."""
 
     @pytest.fixture(autouse=True)
     def setup_pages(self, ui_client):
-        """Initialize the UI client and page objects required by the test."""
+        """Initialize page objects used by the successful bet test."""
 
         self.ui_client = ui_client
         self.match_page = MatchPage(ui_client)
@@ -34,7 +41,7 @@ class TestBetPlacement:
         "the correct bet details and calculated payout."
     )
     def test_successful_single_bet_placement(self):
-        """Verify the complete single-bet placement flow."""
+        """Verify selection, payout, receipt details, and balance deduction."""
 
         self._open_application()
 
@@ -73,16 +80,15 @@ class TestBetPlacement:
 
     @allure.step("Open betting application")
     def _open_application(self):
-        """Open the Sporty Group betting application."""
+        """Open the application using the configured worker-scoped user."""
 
         self.ui_client.open_url(
-            "https://qae-assignment-tau.vercel.app/"
-            "?user-id=candidate-7MCypfTSAdl3"
+            f"{BASE_URL.rstrip('/')}?user-id={TEST_USER_ID}"
         )
 
     @allure.step("Select first upcoming match")
     def _select_upcoming_match(self):
-        """Find the first upcoming match and select the home outcome."""
+        """Find the first eligible match and select the configured outcome."""
 
         match_id = self.match_page.get_upcoming_match(
             get_match_id_flag=True
@@ -102,7 +108,7 @@ class TestBetPlacement:
 
         self.match_page.select_outcome(
             match_id,
-            "home",
+            DEFAULT_SELECTION,
         )
 
         return home_team, away_team
@@ -127,13 +133,13 @@ class TestBetPlacement:
 
         assert_that(self.bet_slip_page.get_selection_market()).described_as(
             "Selected market does not match"
-        ).contains("Home")
+        ).contains(SELECTION_LABELS[DEFAULT_SELECTION])
 
     @allure.step("Enter stake and validate potential payout")
     def _enter_and_validate_stake(self):
         """Enter a valid stake and verify the payout calculation."""
 
-        stake = Decimal("10.00")
+        stake = DEFAULT_STAKE
 
         self.bet_slip_page.enter_stake(
             str(stake)

@@ -5,8 +5,9 @@ from selenium.webdriver.chrome.options import Options
 
 from core.api_client import APIClient
 from core.ui_client import UIClient
+from api_services.balance_service import BalanceService
 
-from core.config import API_TIMEOUT, BASE_URL, USER_ID
+from core.config import API_TIMEOUT, BASE_URL, TEST_USER_ID, UI_TIMEOUT
 from core.logger import configure_logging
 
 
@@ -21,14 +22,15 @@ def api_client():
     """Create a shared API client for the test session."""
     return APIClient(
         base_url=BASE_URL,
-        user_id=USER_ID,
+        user_id=TEST_USER_ID,
         timeout=API_TIMEOUT,
     )
 
 @pytest.fixture
 def ui_client(driver):
-    """Create a UI client for interacting with the web page."""
-    return UIClient(driver)
+    """Create a UI client configured for the current test environment."""
+    return UIClient(driver, timeout=UI_TIMEOUT)
+
 
 @pytest.fixture
 def driver():
