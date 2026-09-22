@@ -27,7 +27,10 @@ class BetSlipPage:
         )
 
     def get_selection_market(self) -> str:
-        """Return the selected betting market and outcome."""
+        """
+        Return the selected betting market and outcome.
+        (who is winning, Home, Away, Draw)
+        """
 
         return self.ui_client.get_text(
             By.CSS_SELECTOR,

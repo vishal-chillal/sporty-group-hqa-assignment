@@ -54,3 +54,21 @@ class BetSlipLocators:
     REMOVE_ALL_ID = "bet-slip-remove-all"
 
     REMOVE_SELECTION_ID = "bet-slip-selection-remove"
+
+
+class ReceiptLocators:
+    """Locators for the successful bet receipt."""
+
+    BET_ID = "modal-success-bet-id"
+
+    MATCH = "modal-success-match"
+
+    STAKE = "modal-success-stake"
+
+    ODDS = "modal-success-odds"
+
+    POTENTIAL_PAYOUT = "modal-success-payout"
+
+    PLACED_AT = "modal-success-placed-at"
+
+    CLOSE = "modal-success-close"
