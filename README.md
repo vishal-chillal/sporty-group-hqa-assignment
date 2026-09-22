@@ -141,6 +141,10 @@ allure generate allure-results -o allure-report --clean
 
 Generated `allure-results/` and `allure-report/` directories are ignored by Git.
 
+When a UI test fails, the framework also saves a screenshot under
+`test-artifacts/screenshots/` and attaches the screenshot and failure URL to the
+Allure result. These artifacts are ignored by Git.
+
 ## Expected results
 
 The automated tests intentionally assert the requirements identified during

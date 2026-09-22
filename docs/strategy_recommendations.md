@@ -10,7 +10,8 @@ The assignment requires two focused automated tests:
 The framework intentionally stays small and uses Page Objects for the UI, service
 objects for API operations, Pytest fixtures for lifecycle management, and Allure
 for test reporting. The two tests run in parallel with isolated worker-scoped user
-IDs and reset state before and after each test.
+IDs and reset state before and after each test. Failed UI tests automatically
+capture a screenshot and browser URL for diagnosis.
 
 ## 2. Selected Automated Tests
 
@@ -76,10 +77,10 @@ UI regression checks as the product defects are fixed.
 
 ### Recommendation 1 — CI/CD and Failure Artifacts
 
-Run API and UI smoke tests in CI after the target environment is available. Add
-automatic screenshots, browser metadata, logs, and Allure attachments when a UI
-test fails. API failures should retain the request correlation ID and response
-body in the report.
+Run API and UI smoke tests in CI after the target environment is available. Keep
+automatic screenshots, browser metadata, logs, and Allure attachments for UI
+failures. API failures should retain the request correlation ID and response body
+in the report.
 
 ### Recommendation 2 — Expand API and Integration Coverage
 
