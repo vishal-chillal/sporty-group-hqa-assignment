@@ -1,3 +1,12 @@
+class HeaderLocators:
+    """Locators for the header section."""
+
+    HEADER_ID = "header"
+
+    LOGO_ID = "header-logo"
+
+    BALANCE_XPATH = "//div[@id='header-balance']//span[contains(text(), 'Balance')]"
+
 class MatchLocators:
     """Locators for the match listing section."""
 
@@ -34,6 +43,8 @@ class BetSlipLocators:
     """Locators for the bet slip section."""
 
     BET_SLIP_ID = "bet-slip"
+
+    BALANCE_ID = "bet-slip-balance"
 
     BET_COUNT_ID = "bet-slip-count"
 

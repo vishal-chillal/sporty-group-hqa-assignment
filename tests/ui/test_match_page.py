@@ -4,6 +4,7 @@ import allure
 import pytest
 
 from ui_pages.bet_slip_page import BetSlipPage
+from ui_pages.header_page import HeaderPage
 from ui_pages.match_page import MatchPage
 from ui_pages.receipt_page import ReceiptPage
 
@@ -23,6 +24,7 @@ class TestBetPlacement:
         self.match_page = MatchPage(ui_client)
         self.bet_slip_page = BetSlipPage(ui_client)
         self.receipt_page = ReceiptPage(ui_client)
+        self.header_page = HeaderPage(ui_client)
 
     @allure.title("Verify successful single bet placement")
     @allure.severity(allure.severity_level.CRITICAL)
@@ -35,6 +37,9 @@ class TestBetPlacement:
         """Verify the complete single-bet placement flow."""
 
         self._open_application()
+
+        initial_balance = self.header_page.wait_for_balance_load()
+        initial_decimal_balance = Decimal(initial_balance.replace("Balance: €", ""))
 
         home_team, away_team = self._select_upcoming_match()
 
@@ -54,6 +59,17 @@ class TestBetPlacement:
             odds=odds,
             expected_payout=expected_payout,
         )
+        self.receipt_page.close()
+        self.ui_client.refresh_page()
+
+        final_balance = self.header_page.wait_for_balance_load()
+
+        final_decimal_balance = Decimal(final_balance.replace("Balance: €", ""))
+
+        assert_that(final_decimal_balance).described_as(
+            "Expected balance after bet placement"
+            "should be initial balance minus stake"
+            ).is_equal_to(initial_decimal_balance - stake)
 
     @allure.step("Open betting application")
     def _open_application(self):

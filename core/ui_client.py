@@ -177,6 +177,10 @@ class UIClient:
         """Return the current page title."""
         return self.driver.title
 
+    def refresh_page(self) -> None:
+        """Refresh the current page."""
+        self.driver.refresh()
+
     def is_visible(
         self,
         by: By,
@@ -193,3 +197,22 @@ class UIClient:
 
         except TimeoutException:
             return False
+
+    def wait_for_text_change(
+        self,
+        by: By,
+        locator: str,
+        initial_text: str,
+    ) -> str:
+        """Wait until an element's text changes from the initial value."""
+
+        def text_changed(driver):
+            element = driver.find_element(by, locator)
+            actual_text = element.text.strip()
+
+            return actual_text if actual_text != initial_text else False
+
+        return WebDriverWait(
+            self.driver,
+            self.timeout,
+        ).until(text_changed)

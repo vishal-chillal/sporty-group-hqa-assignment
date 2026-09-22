@@ -18,6 +18,14 @@ class BetSlipPage:
             BetSlipLocators.BET_SLIP_ID,
         )
 
+    def get_balance(self) -> str:
+        """Return the current balance displayed in the bet slip."""
+
+        return self.ui_client.get_text(
+            By.ID,
+            BetSlipLocators.BALANCE_ID,
+        )
+
     def get_selection_teams(self) -> str:
         """Return the selected match teams."""
 
