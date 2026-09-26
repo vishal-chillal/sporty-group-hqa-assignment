@@ -9,9 +9,10 @@ The assignment requires two focused automated tests:
 
 The framework intentionally stays small and uses Page Objects for the UI, service
 objects for API operations, Pytest fixtures for lifecycle management, and Allure
-for test reporting. The two tests run in parallel with isolated worker-scoped user
-IDs and reset state before and after each test. Failed UI tests automatically
-capture a screenshot and browser URL for diagnosis.
+for test reporting. The two tests run in parallel using the configured test user.
+Their current state operations do not overlap during execution.
+As the regression suite grows, state-mutating tests should use isolated users or 
+equivalent isolated test data to maintain safe parallel execution.
 
 ## 2. Selected Automated Tests
 
@@ -27,8 +28,7 @@ The UI test covers the primary customer journey:
 - Place the bet.
 - Validate the receipt and the persisted balance deduction.
 
-This journey was selected because it crosses the match list, odds selection, Bet
-Slip, transaction submission, receipt, and balance state. It provides more useful
+This journey was selected because it crosses the match list, odds selection, Bet Slip, transaction submission, receipt, and balance state. It provides more useful
 regression coverage than testing an isolated UI control.
 
 #### API — Reset Balance Consistency

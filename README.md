@@ -59,18 +59,18 @@ Alternatively, prefix commands with `poetry run`.
 Defaults are defined in `core/config.py` and can be overridden with environment
 variables:
 
-| Variable | Default | Purpose |
-|---|---|---|
-| `BASE_URL` | `https://qae-assignment-tau.vercel.app` | Application base URL |
-| `USER_ID` | Assignment candidate user | Base user ID |
-| `TEST_USER_ID` | Worker-aware value derived from `USER_ID` | Explicit test user ID |
-| `API_PREFIX` | `/api` | API path prefix |
-| `API_TIMEOUT` | `10` | API timeout in seconds |
-| `UI_TIMEOUT` | `10` | Selenium wait timeout in seconds |
-| `INITIAL_BALANCE` | `125.50` | Expected reset balance |
-| `CURRENCY` | `EUR` | Expected currency |
-| `DEFAULT_STAKE` | `10.00` | UI test stake |
-| `DEFAULT_SELECTION` | `home` | UI test outcome: `home`, `draw`, or `away` |
+| Variable            | Default                                 | Purpose                                    |
+| ------------------- | --------------------------------------- | ------------------------------------------ |
+| `BASE_URL`          | `https://qae-assignment-tau.vercel.app` | Application base URL                       |
+| `USER_ID`           | Assignment candidate user               | Base user ID                               |
+| `TEST_USER_ID`      | Value of `USER_ID`                      | Explicit test user ID                      |
+| `API_PREFIX`        | `/api`                                  | API path prefix                            |
+| `API_TIMEOUT`       | `10`                                    | API timeout in seconds                     |
+| `UI_TIMEOUT`        | `10`                                    | Selenium wait timeout in seconds           |
+| `INITIAL_BALANCE`   | `125.50`                                | Expected reset balance                     |
+| `CURRENCY`          | `EUR`                                   | Expected currency                          |
+| `DEFAULT_STAKE`     | `10.00`                                 | UI test stake                              |
+| `DEFAULT_SELECTION` | `home`                                  | UI test outcome: `home`, `draw`, or `away` |
 
 Example:
 
@@ -80,9 +80,17 @@ USER_ID="candidate-7MCypfTSAdl3" \
 poetry run pytest
 ```
 
-When xdist is active, each worker derives an isolated user ID from `USER_ID`.
-Avoid setting one shared `TEST_USER_ID` when running the UI and API tests in
-parallel unless the target application provides isolated state for that user.
+`TEST_USER_ID` can be explicitly set when a dedicated test account is available:
+
+```bash
+TEST_USER_ID="candidate-7MCypfTSAdl3" poetry run pytest
+```
+
+When xdist is active, tests use the configured TEST_USER_ID. The current
+assignment contains two tests that can run safely in parallel because their
+state changes do not overlap during execution. As the suite grows, additional
+state-mutating tests may require isolated users or test data to avoid
+cross-test interference.
 
 ## Running the tests
 
@@ -114,7 +122,7 @@ poetry run pytest tests/api/test_betting_api.py
 poetry run pytest tests/ui/test_match_page.py
 ```
 
-Run sequentially for debugging:
+Run sequentially for debugging or when shared test state must be isolated:
 
 ```bash
 poetry run pytest -n 1 -s
@@ -122,7 +130,9 @@ poetry run pytest -n 1 -s
 
 The UI fixture in `tests/ui/conftest.py` resets the worker-scoped balance before
 and after each UI test. The API test resets the balance as part of its own
-scenario. This keeps the two tests safe to execute concurrently.
+scenario. When using the single test user supplied with the assignment,
+state-mutating tests should be run sequentially to avoid shared-state
+interference.
 
 ## Allure reporting
 

@@ -40,10 +40,7 @@ SELECTION_LABELS = {
     "away": "Away",
 }
 
-# Each xdist worker receives its own user state so API and UI tests can run safely
-# in parallel. TEST_USER_ID can be set explicitly for a fixed test account.
-WORKER_ID = os.getenv("PYTEST_XDIST_WORKER")
-TEST_USER_ID = os.getenv(
-    "TEST_USER_ID",
-    f"{USER_ID}-{WORKER_ID}" if WORKER_ID else USER_ID,
-)
+# Test user can be overridden through TEST_USER_ID.
+# Parallel execution of additional state-mutating tests may require
+# isolated test users or test data.
+TEST_USER_ID = os.getenv("TEST_USER_ID", USER_ID)
